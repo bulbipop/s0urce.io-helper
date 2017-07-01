@@ -1,3 +1,11 @@
+// ==UserScript==
+// @name         s0urce.io-helper
+// @namespace    https://github.com/bulbipop/s0urce.io-helper
+// @version      2.1b
+// @match        http://s0urce.io/
+// @run-at       document-idle
+// ==/UserScript==
+
 let i = 0
 let words = ['account', 'accountname', 'add', 'anon',
 'batchallfiles', 'bit', 'blockthreat', 'buffer', 'bufferpingset','bytes',
@@ -37,7 +45,7 @@ let words = ['account', 'accountname', 'add', 'anon',
 'wordcounter', 'write',
 'xml']
 
-function print(e) {
+unsafeWindow.printSuggestions = function(e) {
     let autocomplete = document.querySelector('#autocomplete')
     let textbox = document.querySelector('#tool-type-word').value
 
@@ -62,7 +70,7 @@ function print(e) {
     }
 }
 
-function bf(e) {
+unsafeWindow.bf = function(e) {
     if (e.keyCode == 13 && document.querySelector('#bruteforce').checked) {
         let wordlist = document.querySelectorAll('.autoword')
         if (i >= wordlist.length) {
@@ -74,7 +82,7 @@ function bf(e) {
     }
 }
 
-function cost() {
+unsafeWindow.cost = function() {
     let u1 = document.querySelector('#shop-basic-miner-value')
     let u2 = document.querySelector('#shop-advanced-miner-value')
     let u3 = document.querySelector('#shop-mining-drill-value')
@@ -101,7 +109,7 @@ function cost() {
     u6.textContent = u6.textContent.replace(/\d+%$/, ' ') + c6 + '%'
 }
 
-function checkCharges() {
+unsafeWindow.checkCharges = function() {
     log('checking charges')
     let chargesA = document.querySelector('.firewall-part1-charges')
     let chargesB = document.querySelector('.firewall-part2-charges')
@@ -134,7 +142,7 @@ function checkCharges() {
     }
 }
 
-function log(txt, danger=false) {
+unsafeWindow.log = function(txt, danger=false) {
     let newLog = '<div class="window-log-message'
     if (danger) {
         newLog += ' window-log-message-danger">' + txt + '</div>'
@@ -184,7 +192,8 @@ function main() {
     setInterval(checkCharges, 10000)
 
     document.querySelector('#tool-type-word').addEventListener("keydown", bf)
-    document.querySelector('#tool-type-word').addEventListener("keyup", print)
+    document.querySelector('#tool-type-word')
+                                    .addEventListener("keyup", printSuggestions)
 }
 
-main()
+setTimeout(main(), 5000)
